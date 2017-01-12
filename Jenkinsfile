@@ -1,8 +1,11 @@
 def serviceName
 def serviceScaleInt
+def jenkinsIP = ${env.JenkinsIP}
+def jenkinsPort = ${env.JenkinsPort}
 
 node('master') {
     def buildImage = "swarmhost.ccveu.local:5000/mvn-swarm-node:1.0"
+    
     sh "docker info"
     stage('Swarm preparation'){
         def services = sh(returnStdout: true, script: "docker service ls | cut -d ' ' -f12")
@@ -17,7 +20,7 @@ node('master') {
             sh "docker service scale $serviceName=$serviceScaleInt"
         }
         else{
-            serviceName = sh(returnStdout: true, script: "docker service create --constraint 'node.role != manager' --replicas 1 $buildImage")
+            serviceName = sh(returnStdout: true, script: "docker service create -e JENKINS_SERVER=${jenkinsIP} -e JENKINS_PORT=${jenkinsPort} --constraint 'node.role != manager' --replicas 1 $buildImage")
         }
     }
 }

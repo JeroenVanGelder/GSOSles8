@@ -2,7 +2,7 @@ def serviceName
 def serviceScaleInt
 
 node('master') {
-    def buildImage = swarmhost.ccveu.local:5000/mvn-swarm-node:1.0
+    def buildImage = "swarmhost.ccveu.local:5000/mvn-swarm-node:1.0"
     stage('Swarm preparation'){
         def services = sh(returnStdout: true, script: "Docker service ls | cut -d ' ' -f12")
         echo services + ' test'

@@ -18,7 +18,7 @@ node('master') {
             sh "docker service scale $serviceName=$serviceScaleInt"
         }
         else{
-            serviceName = sh(returnStdout: true, script: "docker service create -e JENKINS_SERVER=${${env.JenkinsIP}} -e JENKINS_PORT=${env.JenkinsPort} --constraint 'node.role != manager' --replicas 1 $buildImage")
+            serviceName = sh(returnStdout: true, script: "docker service create -e JENKINS_SERVER=${JenkinsIP} -e JENKINS_PORT=${JenkinsPort} --constraint 'node.role != manager' --replicas 1 $buildImage")
         }
     }
 }
